@@ -10,7 +10,7 @@ const router = createRouter({
       redirect: '/projects',
       children: [
         {
-          path: 'projects/:id/:taskId?',
+          path: 'projects/:id?/:taskId?',
           name: 'projects',
           component: () => import('../views/projects/index.vue')
         }
