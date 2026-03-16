@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useWorkspaceStore } from '@/stores/workspace'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 
@@ -12,10 +12,10 @@ import ProjectToolbar from './components/ProjectToolbar.vue'
 import { TASK_STATUS_MAP, TASK_PRIORITY_STYLES } from '@/config/task'
 
 const route = useRoute()
+const router = useRouter()
 const workspaceStore = useWorkspaceStore()
 
 // State
-const selectedTaskId = ref<string | null>(null)
 const selectedTaskIds = ref<string[]>([])
 
 // Current Project & Tasks
@@ -29,6 +29,10 @@ const tasks = computed(() => {
   return workspaceStore.getTasksByProjectId(currentProject.value.id)
 })
 
+const selectedTaskId = computed(() => {
+  return (route.params.taskId as string) || null
+})
+
 const selectedTask = computed(() => {
   if (!selectedTaskId.value) return null
   return workspaceStore.getTaskById(selectedTaskId.value) || null
@@ -40,7 +44,13 @@ const isAllTasksSelected = computed(() => {
 
 // Actions
 const selectTask = (id: string) => {
-  selectedTaskId.value = id
+  router.push({
+    name: 'projects',
+    params: { 
+      id: route.params.id,
+      taskId: id 
+    }
+  })
 }
 
 const toggleTaskSelection = (id: string) => {
@@ -56,9 +66,10 @@ const toggleAllTasks = (checked: boolean) => {
 }
 
 // Reset selection when project changes
-watch(() => route.params.id, () => {
-  selectedTaskId.value = null
-  selectedTaskIds.value = []
+watch(() => route.params.id, (newId, oldId) => {
+  if (newId !== oldId) {
+    selectedTaskIds.value = []
+  }
 })
 </script>
 
