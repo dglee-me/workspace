@@ -6,11 +6,13 @@ import {
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarMenuButton
+  SidebarMenuButton,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { MAIN_NAV_ITEMS } from '@/config/navigation'
 
 const route = useRoute()
+const { isMobile, setOpenMobile } = useSidebar()
 
 // 현재 경로가 item.path와 일치하거나 하위 경로인지 확인하여 active 상태 반환
 const isActive = (path: string) => {
@@ -18,6 +20,12 @@ const isActive = (path: string) => {
     return route.path === '/'
   }
   return route.path.startsWith(path)
+}
+
+const handleNavClick = () => {
+  if (isMobile.value) {
+    setOpenMobile(false)
+  }
 }
 </script>
 
@@ -35,7 +43,11 @@ const isActive = (path: string) => {
                   class="flex flex-col items-center justify-center p-2 rounded-xl h-[52px] w-[52px] gap-1 transition-all duration-200"
                   :class="isActive(item.path) ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'"
                 >
-                  <router-link :to="item.path" class="flex flex-col items-center">
+                  <router-link 
+                    :to="item.path" 
+                    class="flex flex-col items-center"
+                    @click="handleNavClick"
+                  >
                     <component :is="item.icon" class="w-5 h-5 shrink-0" />
                     <span class="text-[10px] sm:text-xs leading-tight whitespace-nowrap">{{ item.label }}</span>
                   </router-link>

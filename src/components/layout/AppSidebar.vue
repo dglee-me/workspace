@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { useWorkspaceStore } from '@/stores/workspace'
 import { computed } from 'vue'
@@ -16,10 +17,17 @@ import WorkspaceSwitcher from './WorkspaceSwitcher.vue'
 import { Plus } from 'lucide-vue-next'
 
 const route = useRoute()
+const { isMobile, setOpenMobile } = useSidebar()
 const workspaceStore = useWorkspaceStore()
 const activeProjects = computed(() => workspaceStore.activeProjects)
 
 const currentProjectId = computed(() => route.params.id as string)
+
+const handleProjectClick = () => {
+  if (isMobile.value) {
+    setOpenMobile(false)
+  }
+}
 </script>
 
 <template>
@@ -40,7 +48,10 @@ const currentProjectId = computed(() => route.params.id as string)
                 as-child 
                 :is-active="currentProjectId === project.id"
               >
-                <router-link :to="{ name: 'projects', params: { id: project.id } }">
+                <router-link 
+                  :to="{ name: 'projects', params: { id: project.id } }"
+                  @click="handleProjectClick"
+                >
                   <div :class="['w-2 h-2 rounded-full shrink-0', project.color]"></div>
                   <span>{{ project.name }}</span>
                 </router-link>
