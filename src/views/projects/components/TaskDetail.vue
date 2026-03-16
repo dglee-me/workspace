@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Calendar, Clock } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
+import { Calendar, Clock, ChevronLeft } from 'lucide-vue-next'
 import type { Task, Project } from '@/stores/workspace'
 
 interface Props {
@@ -12,10 +13,19 @@ interface Props {
 }
 
 defineProps<Props>()
+defineEmits(['back'])
 </script>
 
 <template>
   <div v-if="task" class="h-full flex flex-col bg-muted/3">
+    <!-- Mobile Back Button -->
+    <div class="md:hidden flex items-center p-4 bg-background/50 backdrop-blur-sm border-b sticky top-0 z-10">
+      <Button variant="ghost" size="sm" class="gap-1 -ml-2" @click="$emit('back')">
+        <ChevronLeft class="w-4 h-4" />
+        <span>목록으로</span>
+      </Button>
+    </div>
+
     <div class="p-8 max-w-4xl mx-auto w-full flex-1 overflow-y-auto space-y-8">
       <!-- Status & Priority -->
       <div class="flex items-center justify-between shrink-0">

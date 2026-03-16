@@ -23,7 +23,7 @@ const currentProjectId = computed(() => route.params.id as string)
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-sidebar">
+  <div class="flex flex-col w-full h-full bg-sidebar">
     <WorkspaceSwitcher />
     <SidebarContent class="pt-4">
       <SidebarGroup>
