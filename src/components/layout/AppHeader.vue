@@ -11,6 +11,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { User, Settings, LogOut } from 'lucide-vue-next'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const handleLogout = () => {
+  authStore.logout()
+  router.push('/')
+}
 </script>
 
 <template>
@@ -23,15 +33,15 @@ import { User, Settings, LogOut } from 'lucide-vue-next'
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Avatar class="h-8 w-8 cursor-pointer hover:opacity-80 transition-opacity">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>DG</AvatarFallback>
+            <AvatarImage :src="authStore.user?.avatarUrl || 'https://github.com/shadcn.png'" :alt="authStore.user?.name" />
+            <AvatarFallback>{{ authStore.user?.name?.substring(0, 2) || 'DG' }}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent class="w-56" align="end">
           <DropdownMenuLabel class="font-normal">
             <div class="flex flex-col space-y-1">
-              <p class="text-sm font-medium leading-none">이동근</p>
-              <p class="text-xs leading-none text-muted-foreground">donggeun@example.com</p>
+              <p class="text-sm font-medium leading-none">{{ authStore.user?.name }}</p>
+              <p class="text-xs leading-none text-muted-foreground">{{ authStore.user?.email }}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -46,7 +56,10 @@ import { User, Settings, LogOut } from 'lucide-vue-next'
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem class="text-destructive focus:bg-destructive/10 focus:text-destructive">
+          <DropdownMenuItem 
+            class="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
+            @select="handleLogout"
+          >
             <LogOut class="mr-2 h-4 w-4" />
             <span>로그아웃</span>
           </DropdownMenuItem>
