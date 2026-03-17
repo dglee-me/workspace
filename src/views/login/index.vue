@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
-
-const router = useRouter();
-const authStore = useAuthStore();
-
-const handleLogin = () => {
-  authStore.login();
-  router.push("/projects");
-};
+import LoginForm from "@/views/login/components/LoginForm.vue"
 </script>
 
 <template>
-  <div
-    class="min-h-screen flex items-center justify-center bg-background text-foreground text-2xl font-bold"
-  >
-    <span class="cursor-pointer hover:opacity-70 transition-opacity" @click="handleLogin">
-      login
-    </span>
+  <div class="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+    <div class="w-full max-w-sm md:max-w-4xl">
+      <LoginForm />
+    </div>
   </div>
 </template>

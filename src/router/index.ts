@@ -37,7 +37,7 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore()
 
-  if (to.name === 'landing' && authStore.isLoggedIn) {
+  if ((to.name === 'landing' || to.name === 'login') && authStore.isLoggedIn) {
     next({ name: 'projects' })
   } else if (to.path.startsWith('/projects') && !authStore.isLoggedIn) {
     next({ name: 'login' })
