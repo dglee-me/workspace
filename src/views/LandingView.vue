@@ -38,7 +38,7 @@ if (authStore.isLoggedIn) {
       </div>
     </header>
     <main
-      class="flex-1 flex flex-col items-center justify-center text-center max-w-4xl mx-auto space-y-4"
+      class="flex-1 flex flex-col items-center justify-center text-center max-w-4xl mx-auto px-4 space-y-4"
     >
       <div class="space-y-4">
         <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
